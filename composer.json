@@ -1,0 +1,26 @@
+{
+  "name":"mitchvdl/katai_reports",
+  "description":"Advanced SQL reporting and graphical interface",
+  "minimum-stability": "dev",
+  "type": "magento-module",
+  "license":"OSL-3.0",
+  "homepage":"",
+  "authors":[
+    {
+      "name":"Mitch Vanderlinden",
+      "email":"magento@mitchvdl.be"
+    }
+  ],
+  "require": {
+    "php": ">=5.3",
+    "magento-hackathon/magento-composer-installer": "*"
+  },
+
+  "extra": {
+    "map": [
+      ["app/design/adminhtml/default/default/layout/katai/reports/layout.xml","app/design/adminhtml/default/default/layout/katai/reports/layout.xml"],
+      ["app/code/community/Katai/Reports","app/code/community/Katai/Reports"],
+      ["app/etc/modules/Katai_Reports.xml","app/etc/modules/Katai_Reports.xml"]
+    ]
+  }
+}
