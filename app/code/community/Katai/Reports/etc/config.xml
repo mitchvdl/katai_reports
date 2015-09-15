@@ -41,12 +41,13 @@
             </katai_reports>
         </blocks>
     </global>
+
     <admin>
         <routers>
             <adminhtml>
                 <args>
                     <modules>
-                        <Katai_Reports before="Mage_Adminhtml">Katai_Reports_Adminhtml</Katai_Reports>
+                        <katai_reports before="Mage_Adminhtml">Katai_Reports_Adminhtml</katai_reports>
                     </modules>
                 </args>
             </adminhtml>
