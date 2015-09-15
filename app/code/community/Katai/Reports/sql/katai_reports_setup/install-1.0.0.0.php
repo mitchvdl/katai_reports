@@ -20,9 +20,6 @@ $table = $installer->getConnection()
         'nullable'  => false,
         'primary'   => true,
     ), 'Event Id')
-    ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_TIMESTAMP, null, array(
-        'nullable'  => false,
-    ), 'Logged At')
     ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_SMALLINT, null, array(
         'unsigned'  => true,
         'nullable'  => false,
