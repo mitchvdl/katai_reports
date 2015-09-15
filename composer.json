@@ -19,7 +19,7 @@
   "extra": {
     "map": [
       ["app/design/adminhtml/default/default/layout/katai/reports/layout.xml","app/design/adminhtml/default/default/layout/katai/reports/layout.xml"],
-      ["app/design/adminhtml/default/default/templates/katai/reports","app/design/adminhtml/default/default/templates/katai/reports"],
+      ["app/design/adminhtml/default/default/template/katai/reports","app/design/adminhtml/default/default/template/katai/reports"],
       ["app/code/community/Katai/Reports","app/code/community/Katai/Reports"],
       ["app/etc/modules/Katai_Reports.xml","app/etc/modules/Katai_Reports.xml"]
     ]
