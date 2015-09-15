@@ -19,10 +19,24 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Grid extends Mage_Adminhtml_Bl
         $this->setId('kataiReportsGrid');
     }
 
+
+    /**
+     * Prepare grid collection object
+     *
+     * @return Katai_Reports_Block_Adminhtml_Katai_Reports_Grid
+     */
+    protected function _prepareCollection()
+    {
+        /* @var $collection Katai_Reports_Model_Resource_Entity_Collection */
+        $collection = Mage::getModel('katai_reports/entity')->getCollection();
+        $this->setCollection($collection);
+        return parent::_prepareCollection();
+    }
+
     /**
      * Prepare grid columns
      *
-     * @return Itanium_Referral_Block_Adminhtml_Referral_Rate_Grid
+     * @return Katai_Reports_Block_Adminhtml_Katai_Reports_Grid
      */
     protected function _prepareColumns()
     {
