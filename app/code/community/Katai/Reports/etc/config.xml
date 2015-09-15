@@ -41,7 +41,7 @@
             </katai_reports>
         </blocks>
     </global>
-    <adminhtml>
+    <admin>
         <routers>
             <adminhtml>
                 <args>
@@ -51,6 +51,8 @@
                 </args>
             </adminhtml>
         </routers>
+    </admin>
+    <adminhtml>
         <translate>
             <modules>
                 <Katai_Reports>
