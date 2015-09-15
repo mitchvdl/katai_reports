@@ -42,6 +42,15 @@
         </blocks>
     </global>
     <adminhtml>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Katai_Reports before="Mage_Adminhtml">Katai_Reports_Adminhtml</Katai_Reports>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
         <translate>
             <modules>
                 <Katai_Reports>
