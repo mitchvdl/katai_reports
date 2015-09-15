@@ -10,6 +10,12 @@
 
 class Katai_Reports_Adminhtml_IndexController extends Mage_Adminhtml_Controller_Action
 {
+
+    public function indexAction()
+    {
+        echo now();
+    }
+
     /**
      * Check ACL permissins
      *
