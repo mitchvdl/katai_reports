@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Katai_Reports>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Reports />
+            </depends>
+        </Katai_Reports>
+    </modules>
+</config>
