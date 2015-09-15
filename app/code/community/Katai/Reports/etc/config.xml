@@ -63,6 +63,13 @@
                 </Katai_Reports>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <Katai_Reports>
+                    <file>katai/reports/layout.xml</file>
+                </Katai_Reports>
+            </updates>
+        </layout>
     </adminhtml>
     <frontend>
         <translate>

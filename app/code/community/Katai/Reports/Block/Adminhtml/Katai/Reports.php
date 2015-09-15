@@ -15,13 +15,12 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports extends Mage_Adminhtml_Block_W
      */
     public function __construct()
     {
-        echo 'ok';
         $this->_blockGroup = 'katai_reports';
         $this->_controller = 'adminhtml_katai_reports';
         $this->_headerText = Mage::helper('katai_reports')->__('Manage Reports');
         parent::__construct();
-//        $this->_updateButton('add', 'label', Mage::helper('itanium_referral')->__('Add New History entry'));
-        $this->removeButton('add');
+        $this->_updateButton('add', 'label', Mage::helper('katai_reports')->__('Add New Report'));
+
     }
     protected function _prepareLayout()
     {
