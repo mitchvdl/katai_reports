@@ -17,6 +17,9 @@
                     <entity>
                         <table>katai_report_entity</table>
                     </entity>
+                    <role>
+                        <table>katai_report_entity_role</table>
+                    </role>
                 </entities>
             </katai_reports_model_resource>
         </models>
