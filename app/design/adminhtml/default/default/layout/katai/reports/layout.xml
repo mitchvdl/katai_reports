@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <layout>
-    <adminhtml_katai_reports>
-
-    </adminhtml_katai_reports>
+    <adminhtml_katai_reports_index>
+        <reference name="content">
+            <block type="katai_reports/adminhtml_katai_reports" name="index.reports.katai.container"/>
+        </reference>
+    </adminhtml_katai_reports_index>
 </layout>
