@@ -33,17 +33,6 @@
                             </katai>
                         </children>
                     </report>
-                    <!--
-                    <!--</katai>-->
-                    <!--<katai_reports translate="title" module="katai_reports">-->
-                        <!--<title>Katai</title>-->
-                        <!--<sort_order>30</sort_order>-->
-                        <!--<reports translate="title" module="katai_reports">-->
-                            <!--<title>Reporting</title>-->
-                            <!--&lt;!&ndash;<action>adminhtml/katai_reports</action>&ndash;&gt;-->
-                            <!--<sort_order>110</sort_order>-->
-                        <!--</reports>-->
-                    <!--</katai_reports>-->
                     <system>
                         <children>
                             <config>
