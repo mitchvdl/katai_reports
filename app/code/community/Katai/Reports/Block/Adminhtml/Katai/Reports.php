@@ -22,11 +22,12 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports extends Mage_Adminhtml_Block_W
         $this->_updateButton('add', 'label', Mage::helper('katai_reports')->__('Add New Report'));
 
     }
-    protected function _prepareLayout()
-    {
-        $this->setChild( 'grid',
-            $this->getLayout()->createBlock( $this->_blockGroup.'/' . $this->_controller . '_grid',
-                $this->_controller . '.grid')->setSaveParametersInSession(true) );
-        return parent::_prepareLayout();
-    }
+//    protected function _prepareLayout()
+//    {
+//        $this->setChild( 'grid', $t =
+//            $this->getLayout()->createBlock( $this->_blockGroup.'/' . $this->_controller . '_grid',
+//                $this->_controller . '.grid')->setSaveParametersInSession(true) );
+//
+//        return parent::_prepareLayout();
+//    }
 }

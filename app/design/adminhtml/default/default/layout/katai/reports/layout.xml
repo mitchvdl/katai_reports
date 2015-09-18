@@ -2,7 +2,26 @@
 <layout>
     <adminhtml_katai_reports_index>
         <reference name="content">
-            <block type="katai_reports/adminhtml_katai_reports" name="index.reports.katai.container"/>
+            <block type="katai_reports/adminhtml_katai_reports" name="katai.reports.index.container"/>
         </reference>
     </adminhtml_katai_reports_index>
+
+    <adminhtml_katai_reports_edit>
+        <reference name="content">
+            <block type="katai_reports/adminhtml_katai_reports_edit" name="katai.reports.edit.container"/>
+        </reference>
+        <reference name="left">
+            <block type="katai_reports/adminhtml_katai_reports_edit_tabs" name="adminhtml_katai_reports_edit_tabs">
+                <block type="katai_reports/adminhtml_katai_reports_edit_tab_main" name="adminhtml_katai_reports_edit_tab_main" />
+                <block type="katai_reports/adminhtml_katai_reports_edit_tab_query" name="adminhtml_katai_reports_edit_tab_query" />
+                <block type="katai_reports/adminhtml_katai_reports_edit_tab_report" name="adminhtml_katai_reports_edit_tab_report" />
+                <block type="katai_reports/adminhtml_katai_reports_edit_tab_custom" name="adminhtml_katai_reports_edit_tab_custom" />
+
+                <action method="addTab"><name>main_section</name><block>adminhtml_katai_reports_edit_tab_main</block></action>
+                <action method="addTab"><name>query_section</name><block>adminhtml_katai_reports_edit_tab_query</block></action>
+                <action method="addTab"><name>report_section</name><block>adminhtml_katai_reports_edit_tab_report</block></action>
+                <action method="addTab"><name>custom_section</name><block>adminhtml_katai_reports_edit_tab_custom</block></action>
+            </block>
+        </reference>
+    </adminhtml_katai_reports_edit>
 </layout>

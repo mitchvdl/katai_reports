@@ -8,6 +8,7 @@
  * Package: Katai_Reports
  */
 
+/** @var Katai_Reports_Model_Resource_Setup $installer */
 $installer = $this;
 
 $installer->startSetup();

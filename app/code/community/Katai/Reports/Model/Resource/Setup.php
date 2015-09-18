@@ -8,7 +8,7 @@
  * Package: Katai_Reports
  */
 
-class Katai_Reports_Resource_Setup extends Mage_Core_Model_Resource_Setup
+class Katai_Reports_Model_Resource_Setup extends Mage_Core_Model_Resource_Setup
 {
 
 }

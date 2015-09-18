@@ -17,6 +17,9 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Grid extends Mage_Adminhtml_Bl
     {
         parent::_construct();
         $this->setId('kataiReportsGrid');
+        $this->setUseAjax(true);
+        $this->setDefaultSort('entity_id');
+        $this->setSaveParametersInSession(true);
     }
 
 
@@ -27,8 +30,10 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Grid extends Mage_Adminhtml_Bl
      */
     protected function _prepareCollection()
     {
+
         /* @var $collection Katai_Reports_Model_Resource_Entity_Collection */
         $collection = Mage::getModel('katai_reports/entity')->getCollection();
+
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -40,30 +45,53 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Grid extends Mage_Adminhtml_Bl
      */
     protected function _prepareColumns()
     {
-        $this->addColumn('rate_id', array(
+        $this->addColumn('entity_id', array(
             'header' => Mage::helper('katai_reports')->__('ID'),
             'align'  => 'left',
-            'index'  => 'rate_id',
-            'width'  => 1,
+            'index'  => 'entity_id',
+            'width'  => '100',
         ));
-        $this->addColumn('website_id', array(
-            'header'  => Mage::helper('katai_reports')->__('Website'),
-            'index'   => 'website_id',
-            'type'    => 'options',
-//            'options' => Mage::getModel('theam_navigation/source_website')->toOptionArray()
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('store_id', array(
+                'header'        => Mage::helper('katai_reports')->__('Store'),
+                'index'         => 'store_id',
+                'type'          => 'store',
+                'store_all'     => true,
+                'store_view'    => true,
+                'sortable'      => false,
+                'filter_condition_callback' => [$this, '_filterStoreCondition'],
+            ));
+        }
+
+        $this->addColumn('title', array(
+            'header'  => Mage::helper('katai_reports')->__('Title'),
+            'index'   => 'title',
+            'width'  => '200',
         ));
-        $this->addColumn('customer_group_id', array(
-            'header'  => Mage::helper('katai_reports')->__('Customer Group'),
-            'index'   => 'customer_group_id',
-            'type'    => 'options',
-//            'options' => Mage::getModel('theam_navigation/source_customer_groups')->toOptionArray()
+
+        $this->addColumn('is_active', array(
+            'header'  => Mage::helper('katai_reports')->__('Active'),
+            'index'   => 'is_active',
+            'type'      => 'options',
+            'width'  => '100',
+            'options'   => ['1' => Mage::helper('adminhtml')->__('Active'), '0' => Mage::helper('adminhtml')->__('Inactive')],
         ));
-        $this->addColumn('rate', array(
-            'header'   => Mage::helper('katai_reports')->__('Rate'),
-            'filter'   => false,
-            'sortable' => false,
-            'html_decorators' => 'nobr',
+
+        $this->addColumn('created_at', array(
+            'header'  => Mage::helper('katai_reports')->__('Created At'),
+            'index'   => 'created_at',
+            'type'      => 'datetime',
+            'width'  => '100',
         ));
+
+        $this->addColumn('updated_at', array(
+            'header'  => Mage::helper('katai_reports')->__('Updated At'),
+            'index'   => 'updated_at',
+            'type'      => 'datetime',
+            'width'  => '100',
+        ));
+
+
         return parent::_prepareColumns();
     }
 
@@ -74,6 +102,30 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Grid extends Mage_Adminhtml_Bl
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/*/edit', array('rate_id' => $row->getId()));
+        return $this->getUrl('*/*/edit', array('entity_id' => $row->getId()));
+    }
+
+    /**
+     *
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->getUrl('*/*/grid', array('_current'=> true));
+    }
+
+    protected function _filterStoreCondition($collection, $column)
+    {
+        if (!$value = $column->getFilter()->getValue()) {
+            return;
+        }
+
+        $this->getCollection()->addStoreFilter($value);
+    }
+
+    protected function _afterLoadCollection()
+    {
+        $this->getCollection()->walk('afterLoad');
+        parent::_afterLoadCollection();
     }
 }
