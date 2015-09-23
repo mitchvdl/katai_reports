@@ -27,17 +27,28 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Query extends Katai_R
 
         $fieldset->addField('sql_query', 'textarea', array(
             'name'      => 'sql_query',
-            'label'     => Mage::helper('adminhtml')->__('Custom SQL Query'),
+            'label'     => Mage::helper('katai_reports')->__('Custom SQL Query'),
             'id'        => 'sql_query',
-            'title'     => Mage::helper('adminhtml')->__('Custom SQL Query'),
+            'title'     => Mage::helper('katai_reports')->__('Custom SQL Query'),
             'class'     => 'input-textarea',
             'required'  => true,
 //            'style'        => 'width: 80px',
         ));
 
+        $fieldset->addField('custom_options_fields', 'text', array(
+            'name'      => 'custom_options[select_fields]',
+            'label'     => Mage::helper('katai_reports')->__('Query Fields'),
+            'required'  => false,
+        ));
+
+        $customOptionsFields = $form->getElement('custom_options_fields');
+        $customOptionsFields->setRenderer(
+            $this->getLayout()->createBlock('katai_reports/adminhtml_katai_reports_edit_renderer_custom_options_select_fields')->setSelectFields($this->getSelectFields())
+        );
+
         Mage::dispatchEvent('adminhtml_katai_reports_edit_tab_query_prepare_form', array('form' => $form));
 
-        $form->setUseContainer(true);
+//        $form->setUseContainer(true);
         $form->setValues($this->getReport()->getData());
         $this->setForm($form);
 
@@ -64,34 +75,4 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Query extends Katai_R
         return Mage::helper('katai_reports')->__('Query');
     }
 
-    /**
-     * Can show tab in tabs
-     *
-     * @return boolean
-     */
-    public function canShowTab()
-    {
-        return true;
-    }
-
-    /**
-     * Tab is hidden
-     *
-     * @return boolean
-     */
-    public function isHidden()
-    {
-        return false;
-    }
-
-    /**
-     * Check permission for passed action
-     *
-     * @param string $action
-     * @return bool
-     */
-    protected function _isAllowedAction($action)
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('katai/reports/' . $action);
-    }
 }

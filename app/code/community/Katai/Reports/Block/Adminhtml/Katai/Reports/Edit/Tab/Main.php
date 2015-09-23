@@ -83,7 +83,7 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Main
 
         Mage::dispatchEvent('adminhtml_katai_reports_edit_tab_main_prepare_form', array('form' => $form));
 
-        $form->setUseContainer(true);
+//        $form->setUseContainer(true);
         $form->setValues($this->getReport()->getData());
         $this->setForm($form);
 
@@ -108,25 +108,5 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Main
     public function getTabTitle()
     {
         return Mage::helper('katai_reports')->__('General');
-    }
-
-    /**
-     * Can show tab in tabs
-     *
-     * @return boolean
-     */
-    public function canShowTab()
-    {
-        return true;
-    }
-
-    /**
-     * Tab is hidden
-     *
-     * @return boolean
-     */
-    public function isHidden()
-    {
-        return false;
     }
 }

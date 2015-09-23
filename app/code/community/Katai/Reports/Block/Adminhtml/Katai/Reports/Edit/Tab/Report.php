@@ -39,7 +39,7 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Report extends Katai_
 
         Mage::dispatchEvent('adminhtml_katai_reports_edit_tab_report_prepare_form', array('form' => $form));
 
-        $form->setUseContainer(true);
+//        $form->setUseContainer(true);
         $form->setValues($this->getReport()->getData());
         $this->setForm($form);
 
@@ -66,34 +66,4 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Report extends Katai_
         return Mage::helper('katai_reports')->__('Report Details');
     }
 
-    /**
-     * Can show tab in tabs
-     *
-     * @return boolean
-     */
-    public function canShowTab()
-    {
-        return true;
-    }
-
-    /**
-     * Tab is hidden
-     *
-     * @return boolean
-     */
-    public function isHidden()
-    {
-        return false;
-    }
-
-    /**
-     * Check permission for passed action
-     *
-     * @param string $action
-     * @return bool
-     */
-    protected function _isAllowedAction($action)
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('katai/reports/' . $action);
-    }
 }

@@ -15,11 +15,13 @@
                 <block type="katai_reports/adminhtml_katai_reports_edit_tab_main" name="adminhtml_katai_reports_edit_tab_main" />
                 <block type="katai_reports/adminhtml_katai_reports_edit_tab_query" name="adminhtml_katai_reports_edit_tab_query" />
                 <block type="katai_reports/adminhtml_katai_reports_edit_tab_report" name="adminhtml_katai_reports_edit_tab_report" />
+                <block type="katai_reports/adminhtml_katai_reports_edit_tab_chart" name="adminhtml_katai_reports_edit_tab_chart" />
                 <block type="katai_reports/adminhtml_katai_reports_edit_tab_custom" name="adminhtml_katai_reports_edit_tab_custom" />
 
                 <action method="addTab"><name>main_section</name><block>adminhtml_katai_reports_edit_tab_main</block></action>
                 <action method="addTab"><name>query_section</name><block>adminhtml_katai_reports_edit_tab_query</block></action>
                 <action method="addTab"><name>report_section</name><block>adminhtml_katai_reports_edit_tab_report</block></action>
+                <action method="addTab"><name>chart_section</name><block>adminhtml_katai_reports_edit_tab_chart</block></action>
                 <action method="addTab"><name>custom_section</name><block>adminhtml_katai_reports_edit_tab_custom</block></action>
             </block>
         </reference>

@@ -1,0 +1,143 @@
+<?php
+/** @var Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Renderer_Custom_Options_Select_Fields $this */
+?>
+<?php
+$_htmlId      = $this->getElement()->getHtmlId();
+$_htmlClass   = $this->getElement()->getClass();
+$_htmlName    = $this->getElement()->getName();
+$_readonly    = $this->getElement()->getReadonly();
+
+$fields = $this->getSelectFields();
+
+$_counter = 0;
+?>
+
+<tr>
+    <td class="label"><?php echo $this->getElement()->getLabel() ?></td>
+    <td colspan="10" class="grid hours">
+        <table id="e" class="dynamic-grid rkstorelocator-officehours" cellspacing="0" cellpadding="0">
+
+            <thead>
+            <tr id="grid_head">
+                <th style=""><?php echo Mage::helper('katai_reports')->__('Name') ?></th>
+                <th class="w-150"><?php echo Mage::helper('katai_reports')->__('Label') ?></th>
+                <th class="w-150"><?php echo Mage::helper('katai_reports')->__('Data Type') ?></th>
+                <th class="w-150"><?php echo Mage::helper('katai_reports')->__('Position') ?></th>
+                <th class="w-150">
+                    <button id="add_new_option_button" class="scalable add" style="" onclick="" type="button">
+                        <span><?php echo Mage::helper('katai_reports')->__('Add Field') ?></span>
+                    </button>
+                </th>
+            </tr>
+            </thead>
+            <tfoot>
+
+            </tfoot>
+            <tbody>
+            <tr id="attribute-options-table"></tr>
+            </tbody>
+        </table>
+        <input type="hidden" id="option-count-check" value=""/>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var optionDefaultInputType = 'text';
+    //template for dynamic row
+    var templateText =
+        '<tr class="option-row">' +
+        '<td><input name="<?php echo $_htmlName; ?>[{{id}}][name]" value="{{name}}" class="input-text required-option full" type="text"/><\/td>' +
+        '<td><input class="input-text" type="text" name="<?php echo $_htmlName; ?>[{{id}}][label]" value="{{label}}"/><\/td>' +
+        '<td><input class="input-text" type="text" name="<?php echo $_htmlName; ?>[{{id}}][data_type]" value="{{data_type}}"/><\/td>' +
+        '<td><input class="input-text" type="text" name="<?php echo $_htmlName; ?>[{{id}}][position]" value="{{position}}"/><\/td>' +
+        '<td class="a-left">' +
+        '<input type="hidden" class="delete-flag" name="<?php echo $_htmlName; ?>[{{id}}][delete]" value="" />' +
+        '<input type="hidden" class="update-flag" name="<?php echo $_htmlName; ?>[{{id}}][update]" value="{{update}}"/>' +
+        '<button class="scalable delete delete-option" type="button"><span><?php echo $this->__("Delete")?></span></button>' +
+        '<\/td>' +
+        '<\/tr>';
+
+    var attributeOption = {
+        table : $('attribute-options-table'),
+        templateSyntax : /(^|.|\r|\n)({{(\w+)}})/,
+        templateText : templateText,
+        itemCount : 0,
+        totalItems : 0,
+        //add dynamic row function
+        add : function(data) {
+            this.template = new Template(this.templateText, this.templateSyntax);
+            if (!data.id) {
+                data = {};
+//                data.id = 'option_' + this.itemCount;
+                data.id = (new Date()).getTime();
+            }
+            if (!data.intype)
+                data.intype = optionDefaultInputType;
+
+            Element.insert(this.table, {before: this.template.evaluate(data)});
+            this.bindRemoveButtons();
+            this.itemCount++;
+            this.totalItems++;
+            this.updateItemsCountField();
+        },
+        //remove dynamic row function
+        remove : function(event) {
+
+
+            if (confirm('<?php echo $this->__("Do you really delete this field?");?>')) {
+                var element = $(Event.findElement(event, 'tr'));
+                element.ancestors().each(function(parentItem) {
+                    if (parentItem.hasClassName('option-row')) {
+                        element = parentItem;
+                        throw $break;
+                    } else if (parentItem.hasClassName('box')) {
+                        throw $break;
+                    }
+                });
+
+                if (element) {
+                    element.remove();
+                }
+            }
+        },
+        updateItemsCountField: function() {
+            return this;
+        },
+        bindRemoveButtons : function() {
+            var buttons = $$('.delete-option');
+            for (var i = 0; i < buttons.length; i++) {
+                if (!$(buttons[i]).binded) {
+                    $(buttons[i]).binded = true;
+                    Event.observe(buttons[i], 'click', this.remove.bind(this));
+                }
+            }
+        }
+
+    }
+    if ($('row-template')) {
+        $('row-template').remove();
+    }
+    attributeOption.bindRemoveButtons();
+
+    if ($('add_new_option_button')) {
+        Event.observe('add_new_option_button', 'click', attributeOption.add.bind(attributeOption));
+    }
+    Validation.addAllThese([
+        ['required-option', '<?php echo Mage::helper('katai_reports')->__('Failed') ?>', function(v) {
+            return !Validation.get('IsEmpty').test(v);
+        }]
+    ]);
+    Validation.addAllThese([
+        ['required-options-count', '<?php echo Mage::helper('katai_reports')->__('Options is required') ?>', function(v) {
+            return !Validation.get('IsEmpty').test(v);
+        }]
+    ]);
+    <?php
+        /** pulling data from Ssd_Shower_Block_Adminhtml_Shower_Edit_Tab_Options **/
+        if ($options = $this->getSelectFields()) {
+            foreach ($options as $_idx => $_value): ?>
+    attributeOption.add(<?php echo Mage::helper('core')->jsonEncode(['id' => $_idx] + $_value); ?>);
+    <?php endforeach; } ?>
+    //]]>
+</script>

@@ -11,6 +11,8 @@
 class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Controller_Action
 {
 
+    protected $_errors = [];
+
     protected function _initAction()
     {
         $this->loadLayout()
@@ -67,7 +69,25 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
     }
 
 
+    public function runAction()
+    {
+        /** @var Katai_Reports_Helper_Data $helper */
+        $helper = Mage::helper('katai_reports');
 
+        $report = $this->_initReport();
+
+        $processor = $helper->getProcessor();
+
+        echo $processor->filter($report->getSqlQuery());
+
+        $resource = Mage::getSingleton('core/resource');
+        $read = $resource->getConnection('core_read');
+        $result = $read->fetchAll($processor->filter($report->getSqlQuery()));
+
+        //Zend_Debug::dump($result);;
+
+        echo $this->getLayout()->createBlock('katai_reports/chart_bar', null, ['result' => $result, 'report' => $report])->toHtml();
+    }
 
 
     /**
@@ -78,17 +98,36 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
         $data = $this->getRequest()->getPost();
         if ($data) {
             $report = $this->_initReport();
-            if ($this->getRequest()->getParam('report_id') && ! $report->getId()) {
+
+            if ($this->getRequest()->getParam('entity_id') && ! $report->getId()) {
                 return $this->_redirect('*/*/');
             }
             $report->addData($data);
+            Mage::dispatchEvent('katai_report_entity_prepare_save', array('report' => $report, 'request' => $this->getRequest()));
+
+            //validating
+            if (!$this->_validatePostData($data)) {
+                $this->_redirect('*/*/edit', array('entity_id' => $report->getId(), '_current' => true));
+                return $this;
+            }
+
+
             try {
                 $report->save();
                 $this->_getSession()->addSuccess(Mage::helper('katai_reports')->__('The report has been saved.'));
+
+                // clear previously saved data from session
+                Mage::getSingleton('adminhtml/session')->setFormData(false);
+                // check if 'Save and Continue'
+                if ($this->getRequest()->getParam('back')) {
+                    $this->_redirect('*/*/edit', array('entity_id' => $report->getId(), '_current'=>true));
+                    return $this;
+                }
+
             } catch (Exception $e) {
                 Mage::logException($e);
                 $this->_getSession()->addError($this->__('Cannot save Repoport.'));
-                return $this->_redirect('*/*/edit', array('report_id' => $report->getId(), '_current' => true));
+                return $this->_redirect('*/*/edit', array('entity_id' => $report->getId(), '_current' => true));
             }
         }
         return $this->_redirect('*/*/');
@@ -121,10 +160,9 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
         $response = new Varien_Object(array('error' => false));
         $post     = $this->getRequest()->getPost();
         $message  = null;
-        if (!isset($post['title']) || !isset($post['sql_query'])) {
+        if (!$this->_validatePostData($post) ) {
             $message = $this->__('Please enter all Report information.');
-        } else {
-
+//            $message .= "<br />" . implode($this->getErrors(), '<br />');
         }
         if ($message) {
             $this->_getSession()->addError($message);
@@ -144,5 +182,36 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
     {
 //        return true;
         return Mage::getSingleton('admin/session')->isAllowed('report/katai/reports');
+    }
+
+    /**
+     * Validate post data
+     *
+     * @param array $data
+     * @return bool     Return FALSE if someone item is invalid
+     */
+    protected function _validatePostData($data)
+    {
+        $this->_errors = [];
+
+        if (!Zend_Validate::is($data['title'], 'NotEmpty')) {
+            $this->_errors[] = $this->__('Please enter a title.');
+        }
+
+        if (!Zend_Validate::is($data['sql_query'], 'NotEmpty')) {
+            $this->_errors[] = $this->__('Please enter a SQL Query.');
+        }
+        // TODO : validate the sql_query to see if there are no dangerous keywords in place. This is a pre-check, the final check is performed on the database through a different user if set-up.
+
+        return count($this->_errors) == 0;
+    }
+
+    /**
+     * Return errors, or else empty array
+     * @return array
+     */
+    protected function getErrors()
+    {
+        return $this->_errors;
     }
 }

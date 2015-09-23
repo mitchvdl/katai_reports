@@ -15,9 +15,6 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit extends Mage_Adminhtml_Bl
      */
     protected function _construct()
     {
-
-        $this->setTemplate('katai/reports/widget/form/tab/container.phtml');
-
         $this->_objectId = 'entity_id';
         $this->_blockGroup = 'katai_reports';
         $this->_controller = 'adminhtml_katai_reports';
@@ -41,6 +38,16 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit extends Mage_Adminhtml_Bl
             $this->_updateButton('delete', 'label', Mage::helper('katai_reports')->__('Delete Report'));
         } else {
             $this->_removeButton('delete');
+        }
+
+        if ($this->_isAllowedAction('run')) {
+            $this->_addButton('run', array(
+                'label'     => Mage::helper('katai_reports')->__('Run'),
+                'onclick'   => 'setLocation(\'' . Mage::getUrl('*/*/run', ['entity_id' => Mage::registry('current_katai_report_entity')->getId()]) . '\')',
+                'class'     => 'go',
+            ), -100);
+        } else {
+            $this->_removeButton('run');
         }
     }
     /**
@@ -92,6 +99,38 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit extends Mage_Adminhtml_Bl
     {
         return true;
         return Mage::getSingleton('admin/session')->isAllowed('report/katai/reports/' . $action);
+    }
+
+
+    /**
+     * Prepare layout
+     *
+     * @return Mage_Core_Block_Abstract
+     */
+    protected function _prepareLayout()
+    {
+        $tabsBlock = $this->getLayout()->getBlock('adminhtml_katai_reports_edit');
+        if ($tabsBlock) {
+            $tabsBlockJsObject = $tabsBlock->getJsObjectName();
+            $tabsBlockPrefix   = $tabsBlock->getId() . '_';
+        } else {
+            $tabsBlockJsObject = 'katai_tabsJsTabs';
+            $tabsBlockPrefix   = 'katai_tabs_';
+        }
+
+        $this->_formScripts[] = "
+          function saveAndContinueEdit(urlTemplate) {
+                var tabsIdValue = " . $tabsBlockJsObject . ".activeTab.id;
+                var tabsBlockPrefix = '" . $tabsBlockPrefix . "';
+                if (tabsIdValue.startsWith(tabsBlockPrefix)) {
+                    tabsIdValue = tabsIdValue.substr(tabsBlockPrefix.length)
+                }
+                var template = new Template(urlTemplate, /(^|.|\\r|\\n)({{(\w+)}})/);
+                var url = template.evaluate({tab_id:tabsIdValue});
+                editForm.submit(url);
+            }
+        ";
+        return parent::_prepareLayout();
     }
 
 }
