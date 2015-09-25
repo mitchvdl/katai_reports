@@ -45,8 +45,8 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
      */
     public function editAction()
     {
-        $rate = $this->_initReport();
-        $this->_title($rate->getId() ? sprintf("Edit Report #%s", $rate->getId()) : $this->__('New Report'));
+        $report = $this->_initReport();
+        $this->_title($report->getId() ? sprintf("Edit Report #%s", $report->getId()) : $this->__('New Report'));
         $this->_initAction()
             ->renderLayout();
     }
@@ -71,22 +71,27 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
 
     public function runAction()
     {
+        $report = $this->_initReport();
+        $this->_title(sprintf("Run Report #%s", $report->getId()));
+        $this->_initAction()
+            ->renderLayout();
+
         /** @var Katai_Reports_Helper_Data $helper */
         $helper = Mage::helper('katai_reports');
 
-        $report = $this->_initReport();
+
 
         $processor = $helper->getProcessor();
 
-        echo $processor->filter($report->getSqlQuery());
+        //echo $processor->filter($report->getSqlQuery());
 
-        $resource = Mage::getSingleton('core/resource');
-        $read = $resource->getConnection('core_read');
-        $result = $read->fetchAll($processor->filter($report->getSqlQuery()));
+//        $resource = Mage::getSingleton('core/resource');
+//        $read = $resource->getConnection('core_read');
+//        $result = $read->fetchAll($processor->filter($report->getSqlQuery()));
 
         //Zend_Debug::dump($result);;
 
-        echo $this->getLayout()->createBlock('katai_reports/chart_bar', null, ['result' => $result, 'report' => $report])->toHtml();
+        //echo $this->getLayout()->createBlock('katai_reports/chart_bar', null, ['result' => $result, 'report' => $report])->toHtml();
     }
 
 
@@ -213,5 +218,17 @@ class Katai_Reports_Adminhtml_Katai_ReportsController extends Mage_Adminhtml_Con
     protected function getErrors()
     {
         return $this->_errors;
+    }
+
+    /**
+     * Export order grid to CSV format
+     */
+    public function exportCsvAction()
+    {
+        $this->_initReport();
+
+        $fileName   = 'report.csv';
+        $grid       = $this->getLayout()->createBlock('katai_reports/adminhtml_katai_reports_run_grid');
+        $this->_prepareDownloadResponse($fileName, $grid->getCsvFile());
     }
 }

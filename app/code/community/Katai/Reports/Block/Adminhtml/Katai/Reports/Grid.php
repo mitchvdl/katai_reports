@@ -91,6 +91,28 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Grid extends Mage_Adminhtml_Bl
             'width'  => '100',
         ));
 
+        $this->addColumn('action',
+            array(
+                'header'    => Mage::helper('katai_reports')->__('Action'),
+                'width'     => '50px',
+                'type'      => 'action',
+                'getter'     => 'getId',
+                'actions'   => array(
+                    array(
+                        'caption' => Mage::helper('katai_reports')->__('Run'),
+                        'url'     => array(
+                            'base'=>'*/*/run',
+                            'params'=>array('store'=>$this->getRequest()->getParam('store'))
+                        ),
+                        'field'   => 'entity_id'
+                    )
+                ),
+                'filter'    => false,
+                'sortable'  => false,
+                'index'     => 'stores',
+            ));
+
+        Mage::dispatchEvent('adminhtml_katai_reports_prepare_columns', array('grid' => $this));
 
         return parent::_prepareColumns();
     }

@@ -43,4 +43,60 @@ class Katai_Reports_Helper_Data extends Mage_Core_Helper_Abstract
        ];
     }
 
+    public function convertDataTypeDDL($type)
+    {
+        switch ($type) {
+            case Varien_Db_Ddl_Table::TYPE_TIME:
+            case Varien_Db_Ddl_Table::TYPE_DATETIME:
+                $type = 'datetime';
+                break;
+            case Varien_Db_Ddl_Table::TYPE_DATE:
+                $type = 'date';
+                break;
+            case Varien_Db_Ddl_Table::TYPE_CHAR:
+            case Varien_Db_Ddl_Table::TYPE_TEXT:
+            case Varien_Db_Ddl_Table::TYPE_VARCHAR:
+            case Varien_Db_Ddl_Table::TYPE_LONGVARCHAR:
+            case Varien_Db_Ddl_Table::TYPE_CLOB:
+                $type = 'text';
+                break;
+
+            case Varien_Db_Ddl_Table::TYPE_TINYINT:
+            case Varien_Db_Ddl_Table::TYPE_DOUBLE:
+            case Varien_Db_Ddl_Table::TYPE_REAL:
+            case Varien_Db_Ddl_Table::TYPE_FLOAT:
+                $type = 'number';
+                break;
+            case Varien_Db_Ddl_Table::TYPE_BOOLEAN:
+                $type = 'select';
+                break;
+
+            default:
+                $type = 'text';
+                break;
+        }
+        return $type;
+    }
+
+
+    /**
+     * Return the key mappings to build the adming grid based on the collection item
+     * @param Varien_Object $element
+     * @return array
+     */
+    public function getTempMappingDdl($element)
+    {
+        $fields = [];
+        foreach ( array_keys($element) as $_idx => $key ){
+            $fields[$key] = [
+                'data_type' => Varien_Db_Ddl_Table::TYPE_TEXT,
+                'label' => $key,
+                'code' => $key,
+                'position' => $_idx
+            ];
+        }
+
+        return $fields;
+    }
+
 }

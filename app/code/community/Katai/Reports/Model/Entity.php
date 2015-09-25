@@ -44,7 +44,28 @@ class Katai_Reports_Model_Entity extends Mage_Core_Model_Abstract
             $fields[$field['name']] = $field;
 
         }
-//        ksort($fields);
+        // No fields have been set-up return array from the members
+//        if ( count($fields) == 0 ) {
+//            foreach ((Mage::getSingleton('core/resource')->getConnection('core_write')->describeTable($this->getResource()->getMainTable())) as $i => $field) {
+//                if (in_array($field['DATA_TYPE'],
+//                    [
+//                        Varien_Db_Ddl_Table::TYPE_VARBINARY,
+//                        Varien_Db_Ddl_Table::TYPE_BINARY,
+//                        Varien_Db_Ddl_Table::TYPE_LONGVARBINARY,
+//                        Varien_Db_Ddl_Table::TYPE_BLOB,
+//                    ]
+//                )) {
+//                    continue;
+//                }
+//                $fields[$field['COLUMN_NAME']] = [
+//                    'data_type' => $field['DATA_TYPE'],
+//                    'label' => $field['COLUMN_NAME'],
+//                    'code' => $field['COLUMN_NAME'],
+//                    'position' => $field['COLUMN_POSITION']
+//                ];
+//            }
+//        }
+
         return $fields;
     }
 

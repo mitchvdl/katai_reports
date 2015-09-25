@@ -117,8 +117,6 @@ class Katai_Reports_Model_Template_Filter extends Varien_Filter_Template
 
     public function filter($value)
     {
-
-
         foreach (array(
                      self::TABLE_CONSTRUCTION_PATTERN => 'tableDirective',
                  ) as $pattern => $directive) {

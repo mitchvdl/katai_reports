@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Katai_Reports>
-            <version>1.0.1.0</version>
+            <version>1.0.2.0</version>
         </Katai_Reports>
     </modules>
     <global>
@@ -22,6 +22,9 @@
                     <entity>
                         <table>katai_report_entity</table>
                     </entity>
+                    <chart>
+                        <table>katai_report_chart_entity</table>
+                    </chart>
                     <entity_store>
                         <table>katai_report_entity_store</table>
                     </entity_store>

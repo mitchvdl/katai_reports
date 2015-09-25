@@ -66,4 +66,16 @@ class Katai_Reports_Block_Adminhtml_Katai_Reports_Edit_Tab_Report extends Katai_
         return Mage::helper('katai_reports')->__('Report Details');
     }
 
+    public function getTabUrl()
+    {
+        return $this->getUrl('*/*/run', array('_current' => true));
+    }
+    /**
+     * Return Tab class
+     * @return string
+     */
+    public function getTabClass()
+    {
+        return 'ajax';
+    }
 }
