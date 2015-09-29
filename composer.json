@@ -22,7 +22,9 @@
       ["app/design/adminhtml/default/default/template/katai/reports","app/design/adminhtml/default/default/template/katai/reports"],
       ["app/code/community/Katai/Reports","app/code/community/Katai/Reports"],
       ["app/locale/en_US/Katai_Reports.csv","app/locale/en_US/Katai_Reports.csv"],
-      ["app/etc/modules/Katai_Reports.xml","app/etc/modules/Katai_Reports.xml"]
+      ["app/etc/modules/Katai_Reports.xml","app/etc/modules/Katai_Reports.xml"],
+      ["app/design/frontend/rwd/katai","app/design/frontend/rwd/katai"],
+      ["skin/frontend/rwd/katai","skin/frontend/rwd/katai"]
     ]
   }
 }
